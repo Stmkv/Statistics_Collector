@@ -20,19 +20,35 @@ def get_number_vacancies(programming_languages):
 
 
 def get_salary():
+    salaryes = []
     url = "https://api.hh.ru/vacancies?"
     params = {
             "professional_role": "96",
             "area": "1",
             "period": 30,
             "text": "Программист Python",
-            "only_with_salary": True
         }
     response = requests.get(url, params=params)
     response.raise_for_status()
     response = response.json()
     for number in range(len(response["items"])):
-        print(response["items"][number]["salary"])
+        salaryes.append(response["items"][number]["salary"])
+    return salaryes
+
+
+def predict_rub_salary(salaryes: list):
+    predict_salary = []
+    for salary in salaryes:
+        if salary and salary["currency"] == 'RUR':
+            if salary['from'] and salary["to"]:
+                predict_salary.append((salary['from'] + salary["to"]) / 2)
+            if salary['from'] and not salary["to"]:
+                predict_salary.append(salary['from'] * 1.2)
+            if not salary['from'] and salary["to"]:
+                predict_salary.append(salary['to'] * 0.8)
+        else:
+            predict_salary.append(None)
+    return predict_salary
 
 
 if __name__ == "__main__":
@@ -41,4 +57,5 @@ if __name__ == "__main__":
                             "Python", "Java", "JavaScript"
                             ]
     # pprint.pprint(get_number_vacancies(programming_languages))
-    get_salary()
+    salaryes = get_salary()
+    print(predict_rub_salary(salaryes))
