@@ -80,21 +80,17 @@ def get_sj_vacancies(language):
     return salaries, total_vacancies
 
 
-def get_salary():
-    salaryes = []
-    url = "https://api.hh.ru/vacancies?"
-    params = {
-            "professional_role": "96",
-            "area": "1",
-            "period": 30,
-            "text": "Программист Python",
-        }
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    response = response.json()
-    for number in range(len(response["items"])):
-        salaryes.append(response["items"][number]["salary"])
-    return salaryes
+def calculate_statistics(salaries, total_vacancies):
+    if salaries:
+        average_salary = round(sum(salaries) / len(salaries))
+    else:
+        average_salary = 0
+    vacancies_processed = len(salaries)
+    return {
+        'vacancies_found': total_vacancies,
+        'vacancies_processed': vacancies_processed,
+        'average_salary': average_salary
+    }
 
 
 def predict_rub_salary(salaryes: list):
