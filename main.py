@@ -24,22 +24,32 @@ def predict_rub_salary_sj(vacancy):
     return predict_salary(salary_from, salary_to)
 
 
-def get_number_vacancies(programming_languages):
-    number_vacancies = {}
-    url = "https://api.hh.ru/vacancies?"
-
-    for language in programming_languages:
-        params = {
-            "professional_role": "96",
-            "area": "1",
-            "period": 30,
-            "text": f"Программист {language}"
-        }
-        response = requests.get(url, params=params)
+def get_hh_vacancies(language):
+    url = "https://api.hh.ru/vacancies"
+    params = {
+        "professional_role": 96,
+        "area": 1,
+        "period": 30,
+        "text": f"Программист {language}",
+        "per_page": 100
+    }
+    page = 0
+    salaries = []
+    total_vacancies = 0
+    while True:
+        params['page'] = page
+        response = requests.get(url, headers={'User-Agent': 'api-test-agent'}, params=params)
         response.raise_for_status()
         response = response.json()
-        number_vacancies[language] = response["found"]
-    return number_vacancies
+        total_vacancies = response['found']
+        for item in response['items']:
+            salary = predict_rub_salary_hh(item)
+            if salary:
+                salaries.append(salary)
+        if page >= response['pages'] - 1:
+            break
+        page += 1
+    return salaries, total_vacancies
 
 
 def get_salary():
