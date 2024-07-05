@@ -1,5 +1,5 @@
 import requests
-
+import terminaltables
 
 def predict_salary(salary_from, salary_to):
     if salary_from and salary_to:
@@ -92,6 +92,24 @@ def calculate_statistics(salaries, total_vacancies):
         'average_salary': average_salary
     }
 
+
+def print_table(statistics, title):
+    table_data = [
+        ['Язык праограммирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+    ]
+
+    for language, stats in statistics.items():
+        table_data.append([
+            language,
+            stats['vacancies_found'],
+            stats['vacancies_processed'],
+            stats['average_salary']
+        ])
+
+    table_instance = terminaltables.AsciiTable(table_data, title = "SuperJob Moscow")
+    print(table_instance.table)
+
+
 def main():
     programming_languages = ["TypeScript", "Swift", "Go", "C", "C#", "C++", "Python", "Java"]
 
@@ -105,11 +123,9 @@ def main():
         hh_salaries, hh_total_vacancies = get_hh_vacancies(language)
         hh_statistics[language] = calculate_statistics(hh_salaries, hh_total_vacancies)
 
-    print("SuperJob Statistics:")
-    print(sj_statistics)
+    print_table(sj_statistics, title='SuperJob Moscow')
+    print_table(hh_statistics, title='HeadHunter Moscow')
 
-    print("\nHeadHunter Statistics:")
-    print(hh_statistics)
 
 
 if __name__ == "__main__":
