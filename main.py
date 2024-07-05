@@ -106,7 +106,7 @@ def print_table(statistics, title):
             stats['average_salary']
         ])
 
-    table_instance = terminaltables.AsciiTable(table_data, title = "SuperJob Moscow")
+    table_instance = terminaltables.AsciiTable(table_data, title = title)
     print(table_instance.table)
 
 
