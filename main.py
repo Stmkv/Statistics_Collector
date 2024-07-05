@@ -52,6 +52,34 @@ def get_hh_vacancies(language):
     return salaries, total_vacancies
 
 
+def get_sj_vacancies(language):
+    url = "https://api.superjob.ru/2.0/vacancies/"
+    params = {
+        "keyword": f"Программист {language}",
+        "town": "Москва",
+        "catalogues": 48,
+        "count": 100
+    }
+    page = 0
+    salaries = []
+    total_vacancies = 0
+    while True:
+        params['page'] = page
+        response = requests.get(url, headers={
+    'X-Api-App-Id': 'v3.r.136975842.cce41f33febf1b5b393cffa55919bb5147188d2f.c98da888da9efe5721641c2d80223af0b5078f0e'}, params=params)
+        response.raise_for_status()
+        response = response.json()
+        total_vacancies = response['total']
+        for vacancy in response['objects']:
+            salary = predict_rub_salary_sj(vacancy)
+            if salary:
+                salaries.append(salary)
+        if not response['more']:
+            break
+        page += 1
+    return salaries, total_vacancies
+
+
 def get_salary():
     salaryes = []
     url = "https://api.hh.ru/vacancies?"
