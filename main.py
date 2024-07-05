@@ -1,5 +1,7 @@
 import requests
 import terminaltables
+import os
+from dotenv import load_dotenv
 
 def predict_salary(salary_from, salary_to):
     if salary_from and salary_to:
@@ -52,7 +54,7 @@ def get_hh_vacancies(language):
     return salaries, total_vacancies
 
 
-def get_sj_vacancies(language):
+def get_sj_vacancies(language, key):
     url = "https://api.superjob.ru/2.0/vacancies/"
     params = {
         "keyword": f"Программист {language}",
@@ -66,7 +68,7 @@ def get_sj_vacancies(language):
     while True:
         params['page'] = page
         response = requests.get(url, headers={
-    'X-Api-App-Id': 'v3.r.136975842.cce41f33febf1b5b393cffa55919bb5147188d2f.c98da888da9efe5721641c2d80223af0b5078f0e'}, params=params)
+    'X-Api-App-Id': key}, params=params)
         response.raise_for_status()
         response = response.json()
         total_vacancies = response['total']
@@ -111,13 +113,15 @@ def print_table(statistics, title):
 
 
 def main():
+    load_dotenv()
+    secret_ket = os.environ["SECRET_KEY"]
     programming_languages = ["TypeScript", "Swift", "Go", "C", "C#", "C++", "Python", "Java"]
 
     sj_statistics = {}
     hh_statistics = {}
 
     for language in programming_languages:
-        sj_salaries, sj_total_vacancies = get_sj_vacancies(language)
+        sj_salaries, sj_total_vacancies = get_sj_vacancies(language, secret_ket)
         sj_statistics[language] = calculate_statistics(sj_salaries, sj_total_vacancies)
 
         hh_salaries, hh_total_vacancies = get_hh_vacancies(language)
