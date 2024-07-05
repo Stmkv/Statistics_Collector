@@ -11,6 +11,12 @@ def predict_salary(salary_from, salary_to):
     return None
 
 
+def predict_rub_salary_hh(vacancy):
+    salary = vacancy.get('salary')
+    if salary and salary['currency'] == 'RUR':
+        return predict_salary(salary['from'], salary['to'])
+    return None
+
 def get_number_vacancies(programming_languages):
     number_vacancies = {}
     url = "https://api.hh.ru/vacancies?"
