@@ -92,27 +92,25 @@ def calculate_statistics(salaries, total_vacancies):
         'average_salary': average_salary
     }
 
+def main():
+    programming_languages = ["TypeScript", "Swift", "Go", "C", "C#", "C++", "Python", "Java"]
 
-def predict_rub_salary(salaryes: list):
-    predict_salary = []
-    for salary in salaryes:
-        if salary and salary["currency"] == 'RUR':
-            if salary['from'] and salary["to"]:
-                predict_salary.append((salary['from'] + salary["to"]) / 2)
-            if salary['from'] and not salary["to"]:
-                predict_salary.append(salary['from'] * 1.2)
-            if not salary['from'] and salary["to"]:
-                predict_salary.append(salary['to'] * 0.8)
-        else:
-            predict_salary.append(None)
-    return predict_salary
+    sj_statistics = {}
+    hh_statistics = {}
+
+    for language in programming_languages:
+        sj_salaries, sj_total_vacancies = get_sj_vacancies(language)
+        sj_statistics[language] = calculate_statistics(sj_salaries, sj_total_vacancies)
+
+        hh_salaries, hh_total_vacancies = get_hh_vacancies(language)
+        hh_statistics[language] = calculate_statistics(hh_salaries, hh_total_vacancies)
+
+    print("SuperJob Statistics:")
+    print(sj_statistics)
+
+    print("\nHeadHunter Statistics:")
+    print(hh_statistics)
 
 
 if __name__ == "__main__":
-    programming_languages = ["TypeScript", "Swift",
-                            "Go", "C", "C#", "C++",
-                            "Python", "Java", "JavaScript"
-                            ]
-    # pprint.pprint(get_number_vacancies(programming_languages))
-    salaryes = get_salary()
-    print(predict_rub_salary(salaryes))
+    main()
