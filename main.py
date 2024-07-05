@@ -1,5 +1,15 @@
 import requests
-import pprint
+
+
+def predict_salary(salary_from, salary_to):
+    if salary_from and salary_to:
+        return (salary_from + salary_to) / 2
+    if salary_from and not salary_to:
+        return salary_from * 1.2
+    if not salary_from and salary_to:
+        return salary_to * 0.8
+    return None
+
 
 def get_number_vacancies(programming_languages):
     number_vacancies = {}
