@@ -17,6 +17,13 @@ def predict_rub_salary_hh(vacancy):
         return predict_salary(salary['from'], salary['to'])
     return None
 
+
+def predict_rub_salary_sj(vacancy):
+    salary_from = vacancy.get('payment_from')
+    salary_to = vacancy.get('payment_to')
+    return predict_salary(salary_from, salary_to)
+
+
 def get_number_vacancies(programming_languages):
     number_vacancies = {}
     url = "https://api.hh.ru/vacancies?"
