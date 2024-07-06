@@ -4,6 +4,14 @@ import os
 from dotenv import load_dotenv
 
 
+SJ_CATALOGUE_ID = 48
+SJ_COUNT = 100
+HH_PROFESSIONAL_ROLE_ID = 96
+HH_AREA_ID = 1
+HH_COUNT = 100
+HH_PERIOD = 30
+
+
 def predict_salary(salary_from, salary_to):
     if salary_from and salary_to:
         return (salary_from + salary_to) / 2
@@ -30,11 +38,11 @@ def predict_rub_salary_sj(vacancy):
 def get_hh_vacancies(language):
     url = "https://api.hh.ru/vacancies"
     params = {
-        "professional_role": 96,
-        "area": 1,
-        "period": 30,
+        "professional_role": HH_PROFESSIONAL_ROLE_ID,
+        "area": HH_AREA_ID,
+        "period": HH_PERIOD,
         "text": f"Программист {language}",
-        "per_page": 100
+        "per_page": HH_COUNT
     }
     page = 0
     salaries = []
@@ -59,8 +67,8 @@ def get_sj_vacancies(language, key):
     params = {
         "keyword": f"Программист {language}",
         "town": "Москва",
-        "catalogues": 48,
-        "count": 100
+        "catalogues": SJ_CATALOGUE_ID,
+        "count": SJ_COUNT
     }
     page = 0
     salaries = []
