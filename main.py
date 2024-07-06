@@ -54,8 +54,8 @@ def get_hh_vacancies(language):
         response.raise_for_status()
         response = response.json()
         total_vacancies = response["found"]
-        for item in response["items"]:
-            salary = predict_rub_salary_hh(item)
+        for vacancy in response["items"]:
+            salary = predict_rub_salary_hh(vacancy)
             if salary:
                 salaries.append(salary)
         if page >= response["pages"] - 1:
