@@ -3,6 +3,7 @@ import terminaltables
 import os
 from dotenv import load_dotenv
 
+
 def predict_salary(salary_from, salary_to):
     if salary_from and salary_to:
         return (salary_from + salary_to) / 2
@@ -37,7 +38,6 @@ def get_hh_vacancies(language):
     }
     page = 0
     salaries = []
-    total_vacancies = 0
     while True:
         params['page'] = page
         response = requests.get(url, headers={'User-Agent': 'api-test-agent'}, params=params)
@@ -64,11 +64,10 @@ def get_sj_vacancies(language, key):
     }
     page = 0
     salaries = []
-    total_vacancies = 0
     while True:
         params['page'] = page
         response = requests.get(url, headers={
-    'X-Api-App-Id': key}, params=params)
+            'X-Api-App-Id': key}, params=params)
         response.raise_for_status()
         response = response.json()
         total_vacancies = response['total']
@@ -97,7 +96,7 @@ def calculate_statistics(salaries, total_vacancies):
 
 def print_table(statistics, title):
     table_data = [
-        ['Язык праограммирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+        ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
     ]
 
     for language, stats in statistics.items():
@@ -108,13 +107,13 @@ def print_table(statistics, title):
             stats['average_salary']
         ])
 
-    table_instance = terminaltables.AsciiTable(table_data, title = title)
+    table_instance = terminaltables.AsciiTable(table_data, title=title)
     print(table_instance.table)
 
 
 def main():
     load_dotenv()
-    secret_ket = os.environ["SECRET_KEY"]
+    secret_ket = os.environ["SUPER_JOB_SECRET_KEY"]
     programming_languages = ["TypeScript", "Swift", "Go", "C", "C#", "C++", "Python", "Java"]
 
     sj_statistics = {}
@@ -129,7 +128,6 @@ def main():
 
     print_table(sj_statistics, title='SuperJob Moscow')
     print_table(hh_statistics, title='HeadHunter Moscow')
-
 
 
 if __name__ == "__main__":
