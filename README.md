@@ -18,7 +18,8 @@ Python3 должен быть уже установлен. Затем воспо
 
 `python main.py`
 
-![img.png](img.png)
+![Вывод в консоль](https://github.com/Stmkv/Statistics_Collector/assets/169255952/96a0741d-6984-497c-bb69-707064b120d6)
+
 
 ## Цель проекта
 
